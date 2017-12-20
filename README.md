@@ -23,3 +23,6 @@ Note that you need to include the full path to the stl file. The full path is no
 By default, the force vector diameteres are scaled to the to maximum force. The maximum radius can be set with '--max_radius'.
 
 ## In Maya
+
+- Windows --> General Editors --> Script Editor
+- Drop the .mel file into the MEL tab.
