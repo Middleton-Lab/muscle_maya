@@ -100,10 +100,10 @@ if __name__ == '__main__':
     f.write('file -import -type "STL_DC"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
     f.write('-pr "' + os.path.abspath(stlfile) + '";\n')
-    f.write('rename transform1 ALmodel;\n')
-    f.write('select -r ALmodel;\n')
+    f.write('rename transform1 stl_model;\n')
+    f.write('select -r stl_model;\n')
     f.write('hyperShade -assign Color_Presets:Bone;\n')
-    f.write('hide ALmodel;\n\n')
+    f.write('hide stl_model;\n\n')
 
     # Loop through muscles in coordinates file
     for data in M.itertuples():
@@ -168,8 +168,8 @@ if __name__ == '__main__':
         # Reverse surface normals
         f.write('reverseSurface -ch on -rpo on -d 3 ' + muscle + 'cyl;\n\n')
 
-    # Unhide ALmodel
-    f.write('// Unhide ALmodel;\n')
-    f.write('showHidden ALmodel;\n')
+    # Unhide stl_model
+    f.write('// Unhide stl_model;\n')
+    f.write('showHidden stl_model;\n')
 
     f.close()
