@@ -97,10 +97,10 @@ if __name__ == '__main__':
 
     # Import model. Note need full path to stl.
     f.write('// Import Alligator model\n')
-    f.write('file -import -type "STL_DC"  -ignoreVersion -ra true ')
+    f.write('file -import -type "STL_ATF"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
     f.write('-pr "' + os.path.abspath(stlfile) + '";\n')
-    f.write('rename transform1 stl_model;\n')
+    f.write('rename polySurface1 stl_model;\n')
     f.write('select -r stl_model;\n')
     f.write('hyperShade -assign Color_Presets:Bone;\n')
     f.write('hide stl_model;\n\n')
@@ -171,5 +171,9 @@ if __name__ == '__main__':
     # Unhide stl_model
     f.write('// Unhide stl_model;\n')
     f.write('showHidden stl_model;\n')
+
+    # Group all objects together
+    f.write('// Group objects for animation;\n')
+    f.write('')
 
     f.close()
