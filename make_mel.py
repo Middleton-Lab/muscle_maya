@@ -21,6 +21,7 @@ pd_version = float(pd.__version__[2:])
 if pd_version <= 17.0:
     raise ImportWarning("pandas version should be >= 0.17.1")
 
+wd = os.path.dirname(os.path.abspath(__file__))
 
 if __name__ == '__main__':
 
@@ -93,13 +94,13 @@ if __name__ == '__main__':
     f.write('// Import color shader presets\n')
     f.write('file -import -type "mayaBinary"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "Color_Presets" ')
-    f.write('-options "v=0;"  -pr "Color_Presets.mb";\n\n')
+    f.write('-options "v=0;"  -pr "' + os.path.join(wd, 'Color_Presets.mb') + '";\n\n')
 
     # Import model. Note need full path to stl.
     f.write('// Import Alligator model\n')
     f.write('file -import -type "STL_ATF"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
-    f.write('-pr "' + os.path.abspath(stlfile) + '";\n')
+    f.write('-pr "' + os.path.join(wd, stlfile) + '";\n')
     f.write('rename polySurface1 stl_model;\n')
     f.write('select -r stl_model;\n')
     f.write('hyperShade -assign Color_Presets:Bone;\n')
