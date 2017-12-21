@@ -21,7 +21,6 @@ pd_version = float(pd.__version__[2:])
 if pd_version <= 17.0:
     raise ImportWarning("pandas version should be >= 0.17.1")
 
-
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Options')
@@ -49,6 +48,11 @@ if __name__ == '__main__':
                         default=8,
                         required=False)
 
+    parser.add_argument('--rev_arrows',
+                        help='Reverse arows',
+                        default=True,
+                        required=False)
+
     args = parser.parse_args()
 
     stlfile = args.stl
@@ -56,6 +60,7 @@ if __name__ == '__main__':
     sheetname = args.sheet
     scale_radius = args.scale_radius
     cylinder_r_max = args.max_radius
+    rev_arrows = args.rev_arrows
 
     print("scale_radius =", scale_radius)
 
@@ -110,14 +115,22 @@ if __name__ == '__main__':
         muscle = data.muscle[0] + data.muscle[2:]
         f.write('// Muscle ' + muscle + ';\n')
 
-        # Note reversing origin and insertion from coords file to put the arrows
-        # on the correct end.
-        insertion_x = data.x_origin
-        insertion_y = data.y_origin
-        insertion_z = data.z_origin
-        origin_x = data.x_insertion
-        origin_y = data.y_insertion
-        origin_z = data.z_insertion
+        if rev_arrows:
+            insertion_x = data.x_insertion
+            insertion_y = data.y_insertion
+            insertion_z = data.z_insertion
+            origin_x = data.x_origin
+            origin_y = data.y_origin
+            origin_z = data.z_origin
+        else:
+            # Note reversing origin and insertion from coords file to put the arrows
+            # on the correct end.
+            insertion_x = data.x_origin
+            insertion_y = data.y_origin
+            insertion_z = data.z_origin
+            origin_x = data.x_insertion
+            origin_y = data.y_insertion
+            origin_z = data.z_insertion
 
         origin_coords = str(origin_x) + ' ' + str(origin_y) + ' ' + \
             str(origin_z)
@@ -177,3 +190,17 @@ if __name__ == '__main__':
     f.write('')
 
     f.close()
+
+# defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
+# setAttr "areaLight1.rotateX" -90;
+# setAttr "areaLight1.translateY" 50;
+# setAttr "areaLight1.scaleX" 40;
+# setAttr "areaLight1.scaleY" 40;
+# defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
+# setAttr "areaLight2.rotateX" 90;
+# setAttr "areaLight2.translateY" -50;
+# setAttr "areaLight2.scaleX" 40;
+# setAttr "areaLight2.scaleY" 40;
+# setAttr "areaLightShape1.intensity" 0.2;
+# setAttr "areaLightShape2.intensity" 0.2;
+#

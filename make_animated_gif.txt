@@ -2,6 +2,6 @@
 # http://unix.stackexchange.com/questions/24014/creating-a-gif-animation-from-png-files
 # http://www.imagemagick.org/discourse-server/viewtopic.php?t=21766
 
-ffmpeg -i AL008_new%d.jpg -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=1 --delay=10 > out_new.gif
+ffmpeg -i AL_008_%d.jpg -pix_fmt rgb24 -r 10 -f gif - | gifsicle --optimize=1 --delay=10 > out_new.gif
 
-convert $(for ((a=1; a<361; a++)); do printf -- "-delay 10 AL008_new%s.jpg " $a; done;) result.gif
+convert $(for ((a=1; a<241; a++)); do printf -- "-delay 10 AL_008_%s.jpg " $a; done;) result.gif
