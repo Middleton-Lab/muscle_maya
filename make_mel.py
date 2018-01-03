@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
     stlfile = args.stl
     datafile = args.data
-    sheetname = args.sheet
+    sheet_name = args.sheet
     scale_radius = args.scale_radius
     cylinder_r_max = args.max_radius
     rev_arrows = args.rev_arrows
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     outfile = file_prefix + ".mel"
 
     # Read data file
-    M = pd.read_excel(datafile, sheetname=sheetname)
+    M = pd.read_excel(datafile, sheet_name=sheet_name)
 
     M = M[M.ID == file_prefix]
 
