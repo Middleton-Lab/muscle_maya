@@ -8,6 +8,8 @@ Generate mel script for stl and data file
 
 """
 
+print()
+
 from numpy import cross, eye, dot, array, pi
 from numpy.linalg import norm
 from math import atan2, sqrt
@@ -121,7 +123,7 @@ def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_
     f.write('// Import Alligator model\n')
     f.write('file -import -type "STL_ATF"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
-    f.write('-pr "' + os.path.abspath(stlfile) + '";\n')
+    f.write('-pr "' + os.path.join(base_path, stlfile) + '";\n')
     f.write('rename polySurface1 stl_model;\n')
     f.write('select -r stl_model;\n')
     f.write('hyperShade -assign Color_Presets:Bone;\n')
@@ -200,31 +202,61 @@ def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_
 
     # Unhide stl_model
     f.write('// Unhide stl_model;\n')
-    f.write('showHidden stl_model;\n')
+    f.write('showHidden stl_model;\n\n')
 
     # Group all objects together
     f.write('// Group objects for animation;\n')
-    f.write('')
+    f.write('SelectAll;\n')
+    f.write('doGroup 0 1 1;\n')
+    f.write('setAttr "group1.scaleX" ' + str(rescale_factor) + ';\n')
+    f.write('setAttr "group1.scaleY" ' + str(rescale_factor) + ';\n')
+    f.write('setAttr "group1.scaleZ" ' + str(rescale_factor) + ';\n')
+    f.write('setAttr "group1.translateY" -10;\n\n')
 
+    # Animate rotation
+    f.write('// Animate rotation\n')
+    f.write('select -r group1;\n')
+
+    f.write('currentTime 1;\n')
+    f.write('setAttr "group1.rotateY" -90;\n')
+    f.write('SetKey;\n')
+    f.write('setKeyframe -breakdown 0 -hierarchy none -controlPoints 0 -shape 0 {"group1"};\n')
+
+    f.write('currentTime 120;\n')
+    f.write('setAttr "group1.rotateY" 90;\n')
+    f.write('SetKey;\n')
+    f.write('setKeyframe -breakdown 0 -hierarchy none -controlPoints 0 -shape 0 {"group1"};\n')
+
+    f.write('currentTime 240;\n')
+    f.write('setAttr "group1.rotateY" -90;\n')
+    f.write('SetKey;\n')
+    f.write('setKeyframe -breakdown 0 -hierarchy none -controlPoints 0 -shape 0 {"group1"};\n')
+    f.write('select -cl;\n\n')
+
+    # Make lights
+    f.write('// Make lights\n')
+    # Light above
+    f.write('defaultDirectionalLight(1, 1,1,1, "0", 0,0,0, 0);\n')
+    f.write('setAttr "directionalLight1.rotateX" -90;\n')
+    f.write('setAttr "directionalLight1.translateY" 50;\n')
+    f.write('setAttr "directionalLight1.scaleX" 2;\n')
+    f.write('setAttr "directionalLight1.scaleY" 2;\n')
+    f.write('setAttr "directionalLight1.scaleZ" 2;\n')
+    f.write('setAttr "directionalLightShape1.intensity" 1.5;\n')
+    # Light below
+    f.write('defaultDirectionalLight(1, 1,1,1, "0", 0,0,0, 0);\n')
+    f.write('setAttr "directionalLight2.rotateX" 90;\n')
+    f.write('setAttr "directionalLight2.translateY" -50;\n')
+    f.write('setAttr "directionalLight2.scaleX" 2;\n')
+    f.write('setAttr "directionalLight2.scaleY" 2;\n')
+    f.write('setAttr "directionalLight2.scaleZ" 2;\n')
+    f.write('setAttr "directionalLightShape2.intensity" 1;\n')
+
+
+    # Close file
     f.close()
 
     print('\n')
- 
-# Light above
-# defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
-# setAttr "areaLight1.rotateX" -90;
-# setAttr "areaLight1.translateY" 50;
-# setAttr "areaLight1.scaleX" 40;
-# setAttr "areaLight1.scaleY" 40;
-# defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
-# Light below
-# setAttr "areaLight2.rotateX" 90;
-# setAttr "areaLight2.translateY" -50;
-# setAttr "areaLight2.scaleX" 40;
-# setAttr "areaLight2.scaleY" 40;
-# setAttr "areaLightShape1.intensity" 0.2;
-# setAttr "areaLightShape2.intensity" 0.2;
-#
 
 control_file = '/Users/kmm/Google Drive/Work/Research/Alligator Maya/specimens/Control_File.xlsx'
 ctrl = pd.read_excel(control_file)
