@@ -101,6 +101,7 @@ def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_
     M['cone_hr'] = 2  # cone_r / 2
 
     # Open mel script outfile for writing
+    print('Writing ' + outfile)
     f = open(outfile, 'w')
 
     # Write header info
@@ -207,12 +208,16 @@ def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_
 
     f.close()
 
+    print('\n')
+ 
+# Light above
 # defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
 # setAttr "areaLight1.rotateX" -90;
 # setAttr "areaLight1.translateY" 50;
 # setAttr "areaLight1.scaleX" 40;
 # setAttr "areaLight1.scaleY" 40;
 # defaultAreaLight(1, 1,1,1, 0, 0, 0,0,0, 1, 0);
+# Light below
 # setAttr "areaLight2.rotateX" 90;
 # setAttr "areaLight2.translateY" -50;
 # setAttr "areaLight2.scaleX" 40;
@@ -223,6 +228,17 @@ def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_
 
 control_file = '/Users/kmm/Google Drive/Work/Research/Alligator Maya/specimens/Control_File.xlsx'
 ctrl = pd.read_excel(control_file)
+
+for data in ctrl.itertuples():
+    print("Processing " + data.base_path)
+    make_mel(data.base_path,
+             data.stlfile,
+             data.datafile,
+             data.sheet_name,
+             data.scale_radius,
+             data.cylinder_r_max,
+             data.rev_arrows,
+             data.rescale_factor)
 
 
 # base_path = '/Users/kmm/Google Drive/Work/Research/Alligator Maya/specimens/alligator/AL_008'
