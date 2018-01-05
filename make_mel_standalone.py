@@ -81,10 +81,11 @@ pd_version = float(pd.__version__[2:])
 if pd_version <= 17.0:
     raise ImportWarning("pandas version should be >= 0.17.1")
 
-def make_mel(base_path, stlfile, datafile, sheet_name, scale_radius, cylinder_r_max, rev_arrows, rescale_factor):
+def make_mel(base_path, stlfile, datafile, melfile, sheet_name,
+             scale_radius, cylinder_r_max, rev_arrows, rescale_factor):
     file_prefix = stlfile[:-4]
 
-    outfile = os.path.join(base_path, file_prefix + ".mel")
+    outfile = os.path.join(base_path, melfile)
 
     # Read data file
     M = pd.read_excel(os.path.join(base_path, datafile), sheet_name=sheet_name)
@@ -266,6 +267,7 @@ for data in ctrl.itertuples():
     make_mel(data.base_path,
              data.stlfile,
              data.datafile,
+             data.melfile,
              data.sheet_name,
              data.scale_radius,
              data.cylinder_r_max,
