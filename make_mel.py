@@ -103,7 +103,7 @@ if __name__ == '__main__':
 
     # Import model. Note need full path to stl.
     f.write('// Import stl model\n')
-    f.write('file -import -type "STL_ATF"  -ignoreVersion -ra true ')
+    f.write('file -import -type "STLImport"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
     f.write('-pr "' + str(Path(os.path.abspath(stlfile))) + '";\n')
     f.write('select -r ' + file_prefix + ';\n')
