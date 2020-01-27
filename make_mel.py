@@ -67,6 +67,9 @@ if __name__ == '__main__':
 
     file_prefix = stlfile[:-4]
 
+    stl_path = str(Path(os.path.abspath(stlfile)))
+    stl_path = stl_path.replace("\\", "/")
+
     outfile = file_prefix + ".mel"
 
     # Read data file
@@ -105,7 +108,7 @@ if __name__ == '__main__':
     f.write('// Import stl model\n')
     f.write('file -import -type "STLImport"  -ignoreVersion -ra true ')
     f.write('-mergeNamespacesOnClash false -namespace "' + file_prefix + '" ')
-    f.write('-pr "' + str(Path(os.path.abspath(stlfile))) + '";\n')
+    f.write('-pr "' + stl_path + '";\n')
     f.write('select -r ' + file_prefix + ';\n')
     f.write('hyperShade -assign Color_Presets:Bone;\n')
     f.write('hide ' + file_prefix + ';\n\n')
